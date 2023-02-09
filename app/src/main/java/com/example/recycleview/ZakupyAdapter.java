@@ -1,9 +1,12 @@
 package com.example.recycleview;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +35,16 @@ public class ZakupyAdapter extends RecyclerView.Adapter<ZakupyAdapter.ProduktVie
     @Override
     public void onBindViewHolder(@NonNull ProduktViewHolder holder, int position) {
         holder.itemProductView.setText(produkty.get(position));
-        //holder.itemProductView.setOnClickListener();
+        holder.itemProductView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    buttonView.setPaintFlags(buttonView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }else{
+                    buttonView.setPaintFlags(buttonView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+            }
+        });
     }
 
     @Override
@@ -42,12 +54,12 @@ public class ZakupyAdapter extends RecyclerView.Adapter<ZakupyAdapter.ProduktVie
 
     public class ProduktViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final TextView itemProductView;
+        public final CheckBox itemProductView;
         public final ZakupyAdapter zakupyAdapter;
 
         public ProduktViewHolder(@NonNull View itemView,ZakupyAdapter adapter) {
             super(itemView);
-            itemProductView = itemView.findViewById(R.id.textView);
+            itemProductView = itemView.findViewById(R.id.checkbox);
             zakupyAdapter = adapter;
             itemView.setOnClickListener(this);
         }
